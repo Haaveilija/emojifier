@@ -2,7 +2,6 @@
 from PIL import Image
 from numpy import asarray
 import os
-import cv2
 import matplotlib.pyplot as plt
 
 EMOJI_SIZE = 64
@@ -11,6 +10,7 @@ def main():
 	print('Starting emojifier')
 	print('Loading emojis')
 	emojipath = "./emoji/"
+	#inputlist = sorted(os.listdir(emojipath))
 	inputlist = os.listdir(emojipath)
 	emojis = []
 	for file in inputlist:
