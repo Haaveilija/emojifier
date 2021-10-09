@@ -1,10 +1,14 @@
 # emojifier.py
 from PIL import Image
-from numpy import asarray
+import numpy as np
 import os
 import matplotlib.pyplot as plt
 
 EMOJI_SIZE = 64
+
+def avg_color(imgarray):
+	return np.mean(imgarray, axis=(0,1))
+
 
 def main():
 	print('Starting emojifier')
@@ -16,10 +20,11 @@ def main():
 	for file in inputlist:
 		#print(emojipath + file)
 		image = Image.open(emojipath+file).convert("RGBA")
-		data = asarray(image)
+		data = np.asarray(image)
 		emojis.append(data)
 	#print("emoji shape:",data.shape)
 	#print(len(emojis))
+
 	print(f'Loaded {len(emojis)} emojis of shape {data.shape}.')
 
 	imtest = Image.fromarray(data)
