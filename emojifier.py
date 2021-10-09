@@ -15,7 +15,7 @@ def main():
 	emojis = []
 	for file in inputlist:
 		#print(emojipath + file)
-		image = Image.open(emojipath+file)
+		image = Image.open(emojipath+file).convert("RGBA")
 		data = asarray(image)
 		emojis.append(data)
 	#print("emoji shape:",data.shape)
@@ -26,9 +26,19 @@ def main():
 	#image.show()
 	width = 16
 	height = 16
-	im = Image.new("RGB", (width*EMOJI_SIZE, height*EMOJI_SIZE), (0,0,0))
-	image = Image.fromarray(data)
-	position = (0,0)
-	im.paste(image, position, image)
+	im = Image.new("RGBA", (width*EMOJI_SIZE, height*EMOJI_SIZE), (0,0,0))
+	i = 0
+	for x in range(width):
+		for y in range(height):
+			image = Image.fromarray(emojis[i])
+			position = (x*EMOJI_SIZE,y*EMOJI_SIZE)
+			im.paste(image, position, image)
+			i += 1
+	#image = Image.fromarray(data)
+	#position = (0,0)
+	#im.paste(image, position, image)
 	im.show()
+	im.save("./test/test.png", format="png")
+
+
 main()
