@@ -112,6 +112,7 @@ def print_image_with_emojis(image, emojis, avg_colors_of_emojis):
 	shp = image.shape
 	bg_width = shp[0]
 	bg_height = shp[1]
+	print("width,height",bg_width,bg_height)
 	
 	im = create_image(bg_width,bg_height)
 	#image = image.transpose(method=Image.ROTATE_90).transpose(method=Image.FLIP_LEFT_RIGHT)
@@ -132,9 +133,10 @@ def main():
 	print('Starting emojifier')
 	emojis = load_emojis()
 	avg_colors_of_emojis = avg_colors(emojis)
-	#test_image = np.asarray(Image.open('./test/LOTTA.jpg').convert("RGBA").resize((147,147)))
-	#test_image = np.asarray(Image.open('./test/LOTTA.jpg').convert("RGBA").resize((64,64)))
-	test_image = emojis[29]
+	#test_image = np.asarray(Image.open('./test/noots.jpeg').convert("RGBA").resize((147,147)))
+	test_image = np.asarray(Image.open('./test/clones.jpeg').convert("RGBA"))
+	#test_image = emojis[29]
+	#test_image = emojis[best_emoji_index(test_image, emojis)]
 	print_image_with_emojis(test_image, emojis, avg_colors_of_emojis)
 
 
