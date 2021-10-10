@@ -33,6 +33,11 @@ def load_emojis():
 	return emojis
 
 
+def create_image(width,height, color=(0,0,0)):
+	im = Image.new("RGBA", (width*EMOJI_SIZE, height*EMOJI_SIZE), (0,0,0))
+	return im
+
+
 def main():
 	print('Starting emojifier')
 	emojis = load_emojis()
@@ -41,7 +46,7 @@ def main():
 	# create background
 	bg_width = 16
 	bg_height = 16
-	im = Image.new("RGBA", (bg_width*EMOJI_SIZE, bg_height*EMOJI_SIZE), (0,0,0))
+	im = create_image(bg_width,bg_height)
 
 	# insert emojis
 	i = 0
