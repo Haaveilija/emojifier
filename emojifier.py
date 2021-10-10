@@ -38,6 +38,9 @@ def load_emojis():
 
 def create_image(width,height, color=(0,0,0)):
 	print("Start creating image")
+	print("Image width:",width*EMOJI_SIZE)
+	print("Image height:",height*EMOJI_SIZE)
+	print("Image size:",width*height*EMOJI_SIZE*EMOJI_SIZE)
 	im = Image.new("RGBA", (width*EMOJI_SIZE, height*EMOJI_SIZE), color)
 	print("Finished creating image")
 	return im
@@ -63,7 +66,7 @@ def best_emoji_index_for_color(color,avg_colors_of_emojis):
 	i = 0
 	for emoji_color in avg_colors_of_emojis:
 		dist = np.linalg.norm(color-emoji_color)
-		print("Comparing image to emoji no.",i,"distance:",dist)
+		#print("Comparing image to emoji no.",i,"distance:",dist)
 		if dist < smallest_dist:
 			smallest_dist = dist
 			smallest_index = i
@@ -111,16 +114,16 @@ def print_image_with_emojis(image, emojis, avg_colors_of_emojis):
 	bg_height = shp[1]
 	
 	im = create_image(bg_width,bg_height)
+	#image = image.transpose(method=Image.ROTATE_90).transpose(method=Image.FLIP_LEFT_RIGHT)
 
 	print("Start processing")
 	for x in range(bg_width):
-		print("x", x)
 		for y in range(bg_height):
-			print("y",y)
-			position = (x*EMOJI_SIZE, y*EMOJI_SIZE)
+			position = (y*EMOJI_SIZE, x*EMOJI_SIZE)
 			i = best_emoji_index_for_color(image[x,y], avg_colors_of_emojis)
 			em = Image.fromarray(emojis[i])
 			im.paste(em, position, em)
+			print(f'Processing pixel: ({x},{y})    ',end='\r')
 	im.show()
 	im.save("./test/testx.png", format="png")
 
@@ -129,7 +132,10 @@ def main():
 	print('Starting emojifier')
 	emojis = load_emojis()
 	avg_colors_of_emojis = avg_colors(emojis)
-	print_image_with_emojis(emojis[0], emojis, avg_colors_of_emojis)
+	#test_image = np.asarray(Image.open('./test/LOTTA.jpg').convert("RGBA").resize((147,147)))
+	#test_image = np.asarray(Image.open('./test/LOTTA.jpg').convert("RGBA").resize((64,64)))
+	test_image = emojis[29]
+	print_image_with_emojis(test_image, emojis, avg_colors_of_emojis)
 
 
 main()
