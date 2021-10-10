@@ -34,7 +34,7 @@ def load_emojis():
 
 
 def create_image(width,height, color=(0,0,0)):
-	im = Image.new("RGBA", (width*EMOJI_SIZE, height*EMOJI_SIZE), (0,0,0))
+	im = Image.new("RGBA", (width*EMOJI_SIZE, height*EMOJI_SIZE), color)
 	return im
 
 
@@ -44,6 +44,7 @@ def best_emoji_index(im,emojis):
 	i = 0
 	for em in emojis:
 		dist = np.linalg.norm(im-em)
+		print("Comparing image to emoji no.",i,"distance:",dist)
 		if dist < smallest_dist:
 			smallest_dist = dist
 			smallest_index = i
@@ -64,15 +65,24 @@ def main():
 	im = create_image(bg_width,bg_height)
 
 	# insert emojis
-	test_im = emojis[10]
+	clr = (10,100,100,256)
+	test_im = emojis[125] + emojis[12]
+	test_im = np.asarray(create_image(1,1,clr))
 	i = best_emoji_index(test_im, emojis)
 	print(i)
+	k = True
 	for x in range(bg_width):
 		for y in range(bg_height):
+			if k:
+				image = Image.fromarray(test_im)
+				position = (x*EMOJI_SIZE,y*EMOJI_SIZE)
+				im.paste(image, position, image)
+				k = False
+				continue
 			image = Image.fromarray(emojis[i])
+			#image = Image.fromarray(test_im)
 			position = (x*EMOJI_SIZE,y*EMOJI_SIZE)
 			im.paste(image, position, image)
-			#i += 1
 	#image = Image.fromarray(data)
 	#position = (0,0)
 	#im.paste(image, position, image)
