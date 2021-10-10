@@ -110,18 +110,17 @@ def print_emojis_with_avg_colors(emojis,avg_colors_of_emojis):
 def print_image_with_emojis(image, emojis, avg_colors_of_emojis):
 	print("Create background")
 	shp = image.shape
-	bg_width = shp[0]
-	bg_height = shp[1]
+	bg_width = shp[1]
+	bg_height = shp[0]
 	print("width,height",bg_width,bg_height)
 	
 	im = create_image(bg_width,bg_height)
-	#image = image.transpose(method=Image.ROTATE_90).transpose(method=Image.FLIP_LEFT_RIGHT)
 
 	print("Start processing")
 	for x in range(bg_width):
 		for y in range(bg_height):
-			position = (y*EMOJI_SIZE, x*EMOJI_SIZE)
-			i = best_emoji_index_for_color(image[x,y], avg_colors_of_emojis)
+			position = (x*EMOJI_SIZE,y*EMOJI_SIZE)
+			i = best_emoji_index_for_color(image[y,x], avg_colors_of_emojis)
 			em = Image.fromarray(emojis[i])
 			im.paste(em, position, em)
 			print(f'Processing pixel: ({x},{y})    ',end='\r')
@@ -133,9 +132,9 @@ def main():
 	print('Starting emojifier')
 	emojis = load_emojis()
 	avg_colors_of_emojis = avg_colors(emojis)
-	#test_image = np.asarray(Image.open('./test/noots.jpeg').convert("RGBA").resize((147,147)))
-	test_image = np.asarray(Image.open('./test/clones.jpeg').convert("RGBA"))
-	#test_image = emojis[29]
+	test_image = np.asarray(Image.open('./test/MEmapp.jpg').convert("RGBA").resize((128,72))) # width, height
+	#test_image = np.asarray(Image.open('./test/clones.jpeg').convert("RGBA"))
+	#test_image = emojis[82]
 	#test_image = emojis[best_emoji_index(test_image, emojis)]
 	print_image_with_emojis(test_image, emojis, avg_colors_of_emojis)
 
