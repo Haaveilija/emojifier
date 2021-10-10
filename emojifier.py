@@ -10,31 +10,38 @@ def avg_color(imgarray):
 	return np.mean(imgarray, axis=(0,1))
 
 
-def main():
-	print('Starting emojifier')
+def avg_colors(list_of_imgarrays):
+	avg_array = []
+	for imgarray in list_of_imgarrays:
+		avg_array.append(avg_color(imgarray))
+	return avg_array
+
+
+def load_emojis():
 	print('Loading emojis')
 	emojipath = "./emoji/"
 	#inputlist = sorted(os.listdir(emojipath))
 	inputlist = os.listdir(emojipath)
 	emojis = []
 	for file in inputlist:
-		#print(emojipath + file)
 		image = Image.open(emojipath+file).convert("RGBA")
 		data = np.asarray(image)
 		emojis.append(data)
-	#print("emoji shape:",data.shape)
-	#print(len(emojis))
 
 	print(f'Loaded {len(emojis)} emojis of shape {data.shape}.')
 
-	imtest = Image.fromarray(data)
-	#image.show()
-	width = 16
-	height = 16
-	im = Image.new("RGBA", (width*EMOJI_SIZE, height*EMOJI_SIZE), (0,0,0))
+
+def main():
+	print('Starting emojifier')
+	emojis = load_emojis()
+	avg_colors_of_emojis = avg_colors(emojis)
+
+	bg_width = 16
+	bg_height = 16
+	im = Image.new("RGBA", (bg_width*EMOJI_SIZE, bg_height*EMOJI_SIZE), (0,0,0))
 	i = 0
-	for x in range(width):
-		for y in range(height):
+	for x in range(bg_width):
+		for y in range(bg_height):
 			image = Image.fromarray(emojis[i])
 			position = (x*EMOJI_SIZE,y*EMOJI_SIZE)
 			im.paste(image, position, image)
