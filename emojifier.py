@@ -38,10 +38,25 @@ def create_image(width,height, color=(0,0,0)):
 	return im
 
 
+def best_emoji_index(im,emojis):
+	smallest_dist = float('infinity')
+	smallest_index = 0
+	i = 0
+	for em in emojis:
+		dist = np.linalg.norm(im-em)
+		if dist < smallest_dist:
+			smallest_dist = dist
+			smallest_index = i
+		i += 1
+	return smallest_index
+
+
+
 def main():
 	print('Starting emojifier')
 	emojis = load_emojis()
 	avg_colors_of_emojis = avg_colors(emojis)
+	print(len(avg_colors_of_emojis))
 
 	# create background
 	bg_width = 16
@@ -49,13 +64,15 @@ def main():
 	im = create_image(bg_width,bg_height)
 
 	# insert emojis
-	i = 0
+	test_im = emojis[10]
+	i = best_emoji_index(test_im, emojis)
+	print(i)
 	for x in range(bg_width):
 		for y in range(bg_height):
 			image = Image.fromarray(emojis[i])
 			position = (x*EMOJI_SIZE,y*EMOJI_SIZE)
 			im.paste(image, position, image)
-			i += 1
+			#i += 1
 	#image = Image.fromarray(data)
 	#position = (0,0)
 	#im.paste(image, position, image)
