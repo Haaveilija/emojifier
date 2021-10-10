@@ -11,6 +11,7 @@ def avg_color(imgarray):
 
 
 def avg_colors(list_of_imgarrays):
+	print("Calculating average colors of emojis")
 	avg_array = []
 	for imgarray in list_of_imgarrays:
 		avg_array.append(avg_color(imgarray))
@@ -29,6 +30,7 @@ def load_emojis():
 		emojis.append(data)
 
 	print(f'Loaded {len(emojis)} emojis of shape {data.shape}.')
+	return emojis
 
 
 def main():
@@ -36,9 +38,12 @@ def main():
 	emojis = load_emojis()
 	avg_colors_of_emojis = avg_colors(emojis)
 
+	# create background
 	bg_width = 16
 	bg_height = 16
 	im = Image.new("RGBA", (bg_width*EMOJI_SIZE, bg_height*EMOJI_SIZE), (0,0,0))
+
+	# insert emojis
 	i = 0
 	for x in range(bg_width):
 		for y in range(bg_height):
