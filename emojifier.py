@@ -133,7 +133,17 @@ def main():
 	emojis = load_emojis()
 	avg_colors_of_emojis = avg_colors(emojis)
 	input_file = input("Enter filename: ")
-	test_image = np.asarray(Image.open(input_file).convert("RGBA").resize((147,93))) # width, height
+	#test_image = np.asarray(Image.open(input_file).convert("RGBA").resize((147,93))) # width, height
+	test_image = Image.open(input_file).convert("RGBA")
+	width = test_image.size[0]
+	height = test_image.size[1]
+	if width > height:
+		test_image = test_image.resize(147, (147/width)*height)
+	if height < widht:
+		test_image = test_image.resize((147/height)*width,147)
+	else:
+		test_image = test_image.resize(147,147)
+	test_image = np.asarray(test_image)
 	#test_image = emojis[82]
 	#test_image = emojis[best_emoji_index(test_image, emojis)]
 	print_image_with_emojis(test_image, emojis, avg_colors_of_emojis)
