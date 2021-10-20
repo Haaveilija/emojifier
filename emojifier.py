@@ -107,7 +107,7 @@ def print_emojis_with_avg_colors(emojis,avg_colors_of_emojis):
 	im.save("./test/test.png", format="png")
 
 
-def print_image_with_emojis(image, emojis, avg_colors_of_emojis):
+def print_image_with_emojis(image, emojis, avg_colors_of_emojis, output_file):
 	print("Create background")
 	shp = image.shape
 	bg_width = shp[1]
@@ -125,14 +125,16 @@ def print_image_with_emojis(image, emojis, avg_colors_of_emojis):
 			im.paste(em, position, em)
 			print(f'Processing pixel: ({x},{y})    ',end='\r')
 	#im.show()
-	im.save("./testx.png", format="png")
+	im.save(output_file, format="png")
+	print("Saved image as testx.png")
 
 
 def main():
 	print('Starting emojifier')
 	emojis = load_emojis()
 	avg_colors_of_emojis = avg_colors(emojis)
-	input_file = input("Enter filename: ")
+	input_file = input("Enter input file path: ")
+	output_file = input("Enter output file path: ")
 	#test_image = np.asarray(Image.open(input_file).convert("RGBA").resize((147,93))) # width, height
 	test_image = Image.open(input_file).convert("RGBA")
 	width = test_image.size[0]
@@ -141,13 +143,13 @@ def main():
 	if width <= 147 and height < 147:
 		pass
 	elif width >= height:
-		test_image = test_image.resize((147, (147/width)*height))
+		test_image = test_image.resize((147, int((147/width)*height)))
 	elif height < width:
-		test_image = test_image.resize(((147/height)*width,147))
+		test_image = test_image.resize((int((147/height)*width),147))
 	test_image = np.asarray(test_image)
 	#test_image = emojis[82]
 	#test_image = emojis[best_emoji_index(test_image, emojis)]
-	print_image_with_emojis(test_image, emojis, avg_colors_of_emojis)
+	print_image_with_emojis(test_image, emojis, avg_colors_of_emojis, output_file)
 
 
 main()
