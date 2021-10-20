@@ -126,15 +126,23 @@ def print_image_with_emojis(image, emojis, avg_colors_of_emojis, output_file):
 			print(f'Processing pixel: ({x},{y})    ',end='\r')
 	#im.show()
 	im.save(output_file, format="png")
-	print("Saved image as testx.png")
+	print("Saved image as",output_file)
+
 
 
 def main():
 	print('Starting emojifier')
 	emojis = load_emojis()
 	avg_colors_of_emojis = avg_colors(emojis)
+	
 	input_file = input("Enter input file path: ")
+	if input_file == "":
+		input_file = "./emoji/1f3a8.png"
+
 	output_file = input("Enter output file path: ")
+	if output_file == "":
+		output_file = "./testx.png"
+	
 	#test_image = np.asarray(Image.open(input_file).convert("RGBA").resize((147,93))) # width, height
 	test_image = Image.open(input_file).convert("RGBA")
 	width = test_image.size[0]
