@@ -140,12 +140,10 @@ def main():
 	print("test image size", width, height)
 	if width <= 147 and height < 147:
 		pass
-	elif width > height:
+	elif width >= height:
 		test_image = test_image.resize((147, (147/width)*height))
 	elif height < width:
 		test_image = test_image.resize(((147/height)*width,147))
-	else:
-		test_image = test_image.resize((147,147))
 	test_image = np.asarray(test_image)
 	#test_image = emojis[82]
 	#test_image = emojis[best_emoji_index(test_image, emojis)]
