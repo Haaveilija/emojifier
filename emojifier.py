@@ -132,8 +132,8 @@ def main():
 	print('Starting emojifier')
 	emojis = load_emojis()
 	avg_colors_of_emojis = avg_colors(emojis)
-	test_image = np.asarray(Image.open('./test/MEmapp.jpg').convert("RGBA").resize((128,72))) # width, height
-	#test_image = np.asarray(Image.open('./test/clones.jpeg').convert("RGBA"))
+	input_file = input("Enter filename: ")
+	test_image = np.asarray(Image.open(input_file).convert("RGBA").resize((147,93))) # width, height
 	#test_image = emojis[82]
 	#test_image = emojis[best_emoji_index(test_image, emojis)]
 	print_image_with_emojis(test_image, emojis, avg_colors_of_emojis)
