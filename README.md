@@ -4,7 +4,9 @@ Emojifier is a CLI python3 application to replace pixels in an image with emojis
 
 ## Dependencies
 
-...
+- Python 3.x
+- numpy 1.21.2
+- Pillow 8.3.2
 
 ## How to use it
 
@@ -17,7 +19,3 @@ Emojifier uses 1NN to compare the RGBA color vector of each pixel in the input i
 ## External sources
 
 The emoji images are from [gemoji](https://github.com/github/gemoji).
-
-## TODO:
-
-- [ ] add dependency list
