@@ -4,6 +4,7 @@ import numpy as np
 import os
 
 EMOJI_SIZE = 64
+MAX_SIDE_LENGTH = 256
 
 def avg_color(imgarray):
 	return np.mean(imgarray,axis=(0,1))
@@ -147,12 +148,12 @@ def main():
 	width = test_image.size[0]
 	height = test_image.size[1]
 	print("test image size", width, height)
-	if width <= 147 and height < 147:
+	if width <= MAX_SIDE_LENGTH and height < MAX_SIDE_LENGTH:
 		pass
 	elif width >= height:
-		test_image = test_image.resize((147, int((147/width)*height)))
+		test_image = test_image.resize((MAX_SIDE_LENGTH, int((MAX_SIDE_LENGTH/width)*height)))
 	elif height < width:
-		test_image = test_image.resize((int((147/height)*width),147))
+		test_image = test_image.resize((int((MAX_SIDE_LENGTH/height)*width),MAX_SIDE_LENGTH))
 	test_image = np.asarray(test_image)
 	#test_image = emojis[82]
 	#test_image = emojis[best_emoji_index(test_image, emojis)]
