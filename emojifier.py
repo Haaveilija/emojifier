@@ -3,7 +3,7 @@ from PIL import Image
 import numpy as np
 import os
 
-EMOJI_SIZE = 64
+#EMOJI_SIZE = 64
 MAX_SIDE_LENGTH = 256
 
 def avg_color(imgarray):
@@ -21,9 +21,9 @@ def avg_colors(list_of_imgarrays):
 	return avg_array
 
 
-def load_emojis():
+def load_emojis(emojipath):
 	print('Loading emojis')
-	emojipath = "./emoji/"
+	#emojipath = "./emoji/"
 	#inputlist = sorted(os.listdir(emojipath))
 	inputlist = os.listdir(emojipath)
 	emojis = []
@@ -36,12 +36,12 @@ def load_emojis():
 	return emojis
 
 
-def create_image(width,height, color=(0,0,0)):
+def create_image(width,height, emoji_size, color=(0,0,0)):
 	print("Start creating image")
-	print("Output image width:",width*EMOJI_SIZE)
-	print("Output image height:",height*EMOJI_SIZE)
-	print("Output image pixels:",width*height*EMOJI_SIZE*EMOJI_SIZE)
-	im = Image.new("RGBA", (width*EMOJI_SIZE, height*EMOJI_SIZE), color)
+	print("Output image width:",width*emoji_size)
+	print("Output image height:",height*emoji_size)
+	print("Output image pixels:",width*height*emoji_size*emoji_size)
+	im = Image.new("RGBA", (width*emoji_size, height*emoji_size), color)
 	print("Created background for output image")
 	return im
 
@@ -74,26 +74,26 @@ def best_emoji_index_for_color(color,avg_colors_of_emojis):
 	return smallest_index
 
 
-def print_emojis_with_avg_colors(emojis,avg_colors_of_emojis):
+def print_emojis_with_avg_colors(emojis,avg_colors_of_emojis, emoji_size):
 	# create background
 	bg_width = 29
 	bg_height = 30
-	im = create_image(bg_width,bg_height)
+	im = create_image(bg_width,bg_height,emoji_size)
 
 	# insert emojis
 	clr = (10,100,100,256)
 	test_im = emojis[125] + emojis[12]
-	test_im = np.asarray(create_image(1,1,clr))
+	test_im = np.asarray(create_image(1,1,emoji_size,clr))
 	i = best_emoji_index(test_im, emojis)
 	print(i)
 	i = 0
 	j = 0
 	for x in range(bg_width):
 		for y in range(bg_height):
-			position = (x*EMOJI_SIZE,y*EMOJI_SIZE)
+			position = (x*emoji_size,y*emoji_size)
 			#clr = (int(avg_colors_of_emojis[i][0]),int(avg_colors_of_emojis[i][1]),int(avg_colors_of_emojis[i][2]),int(avg_colors_of_emojis[i][3]))
 			clr = (int(avg_colors_of_emojis[i][0]),int(avg_colors_of_emojis[i][1]),int(avg_colors_of_emojis[i][2]),255)
-			test_im = np.asarray(create_image(1,1,clr))
+			test_im = np.asarray(create_image(1,1,emoji_size,clr))
 			image = Image.fromarray(test_im)
 			if i < len(emojis)-1:
 				i += 1
@@ -107,19 +107,19 @@ def print_emojis_with_avg_colors(emojis,avg_colors_of_emojis):
 	im.save("./test/test.png", format="png")
 
 
-def print_image_with_emojis(image, emojis, avg_colors_of_emojis, output_file):
+def print_image_with_emojis(image, emojis, avg_colors_of_emojis, output_file, emoji_size):
 	print("Create background")
 	shp = image.shape
 	bg_width = shp[1]
 	bg_height = shp[0]
 	print("width,height",bg_width,bg_height)
 	
-	im = create_image(bg_width,bg_height)
+	im = create_image(bg_width,bg_height,emoji_size)
 
 	print("Start processing")
 	for x in range(bg_width):
 		for y in range(bg_height):
-			position = (x*EMOJI_SIZE,y*EMOJI_SIZE)
+			position = (x*emoji_size,y*emoji_size)
 			i = best_emoji_index_for_color(image[y,x], avg_colors_of_emojis)
 			em = Image.fromarray(emojis[i])
 			im.paste(em, position, em)
@@ -132,8 +132,14 @@ def print_image_with_emojis(image, emojis, avg_colors_of_emojis, output_file):
 
 def main():
 	print('Starting emojifier')
-	emojis = load_emojis()
+	emoji_path = input("Enter the emoji folder path: ")
+	if emoji_path == "":
+	    emoji_path = "./emoji/"
+	emojis = load_emojis(emoji_path)
 	avg_colors_of_emojis = avg_colors(emojis)
+	
+	emoji_size = emojis[0].shape[0]
+	
 	
 	input_file = input("Enter input file path: ")
 	if input_file == "":
@@ -157,7 +163,7 @@ def main():
 	test_image = np.asarray(test_image)
 	#test_image = emojis[82]
 	#test_image = emojis[best_emoji_index(test_image, emojis)]
-	print_image_with_emojis(test_image, emojis, avg_colors_of_emojis, output_file)
+	print_image_with_emojis(test_image, emojis, avg_colors_of_emojis, output_file, emoji_size)
 
 
 main()
