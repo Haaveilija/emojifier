@@ -22,5 +22,5 @@ Emojifier uses 1NN to compare the RGBA color vector of each pixel in the input i
 
 ## External sources
 
-The emoji images are from [gemoji](https://github.com/github/gemoji).
-Minecraft block textures are from [Minecraft](https://minecraft.com)
+- The emoji images are from [gemoji](https://github.com/github/gemoji).
+- Minecraft block textures are from [Minecraft](https://minecraft.com)
